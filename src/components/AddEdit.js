@@ -25,7 +25,7 @@ function AddEdit() {
 
   async function addProduct() {
     console.log(product);
-    let result = await axios.post("http://localhost:4032/api/product/save", product);
+    let result = await axios.post("http://localhost:4032/api/product", product);
     navigate(`/products`)
     console.log(result)
     alert("product added Successfully");
@@ -50,14 +50,14 @@ function AddEdit() {
       <h1>Add Product</h1>
       <form>
       {/* <TextField name='productid' onChange={updatePrduct} type={'text'} placeholder='product id' variant='outlined' style={{width: "30%"}}/><br/><br/> */}
-        <TextField name='productname' onChange={updatePrduct} type={'text'} placeholder='product name' variant='outlined' style={{width: "30%"}}/><br/><br/>
-        <TextField name='productprice' onChange={updatePrduct} type={'text'} placeholder='product price' variant='outlined' style={{width: "30%"}}/> <br/><br/>
-        <TextField name='productdescription' onChange={updatePrduct} type={'text'} placeholder='product description' variant='outlined' style={{width: "30%"}}/> <br/><br/>
-        <TextField name='productsize' onChange={updatePrduct} type={'text'} placeholder='product size' variant='outlined' style={{width: "30%"}}/> <br/><br/>
-        <TextField name='productstock' onChange={updatePrduct} type={'text'} placeholder='product stock' variant='outlined' style={{width: "30%"}}/> <br/><br/>
-        <TextField name='productimage' onChange={updatePrduct} type={'text'} placeholder='product image' variant='outlined' style={{width: "30%"}}/><br/><br/>
+        <TextField label="product name" name='productname' onChange={updatePrduct} type={'text'} placeholder='product name' variant='outlined' style={{width: "30%"}}/><br/><br/>
+        <TextField label="product price" name='productprice' onChange={updatePrduct} type={'text'} placeholder='product price' variant='outlined' style={{width: "30%"}}/> <br/><br/>
+        <TextField label="product description" name='productdescription' onChange={updatePrduct} type={'text'} placeholder='product description' variant='outlined' style={{width: "30%"}}/> <br/><br/>
+        <TextField label="product size" name='productsize' onChange={updatePrduct} type={'text'} placeholder='product size' variant='outlined' style={{width: "30%"}}/> <br/><br/>
+        <TextField label="product stock" name='productstock' onChange={updatePrduct} type={'text'} placeholder='product stock' variant='outlined' style={{width: "30%"}}/> <br/><br/>
+        <TextField label="product image" name='productimage' onChange={updatePrduct} type={'text'} placeholder='product image' variant='outlined' style={{width: "30%"}}/><br/><br/>
 
-        <Button variant='contained' onClick={addProduct}>Add</Button>
+        <Button variant='contained' onClick={addProduct}>Save</Button>
         {/* <Link to="/products"></Link> */}
          
       </form>

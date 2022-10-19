@@ -14,14 +14,20 @@ import Modal from "@mui/material/Modal";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
 
-const Products = () => {
+const Products = (props) => {
+  console.log(props);
   const [data, setData] = useState([]);
-  const [posts, setPosts] = useState([]);
-  const [status,setStatus] = useState([]);
-  const [prod,setProd] = useState({});
+  const [status, setStatus] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const handleDeleteClose = () => {
+    setDeleteDialogOpen(false);
+  };
+
   useEffect(() => {
     axios
-      .get(`http://localhost:4032/api/product/list`)
+      .get(`http://localhost:4032/api/product`)
       .then((res) => {
         setData(res.data);
       })
@@ -36,15 +42,14 @@ const Products = () => {
   //   .then(res => console.log('Deleted!!!!', res)).catch(err => console.log(err))
   // }
 
- const deleteProduct = (id) => {
-    axios.delete(`http://localhost:4032/api/product/delete/${id}`)
-    .then(response => {
+  const deleteProduct = (id) => {
+    axios.delete(`http://localhost:4032/api/product/${id}`).then((response) => {
       const updatedData = data.filter((item) => item.id !== id);
       setData(updatedData);
       setStatus(response.status);
-      alert("product deleted successfully")
-    })
-   }
+      alert("product deleted successfully");
+    });
+  };
 
   // function deleteProduct(id) {
   //   fetch(`http://localhost:4032/api/product/delete/${id}`, {
@@ -56,39 +61,39 @@ const Products = () => {
   //   })
   // }
 
-  const [product,setProduct] = useState({
-    id:'',
-    productname:'',
-    productdescription: '',
-    productsize:'',
-    productstock: '',
-    productimage: ''
+  const [product, setProduct] = useState({
+    id: "",
+    productname: "",
+    productdescription: "",
+    productsize: "",
+    productstock: "",
+    productimage: "",
+  });
 
-  })
-
-  const updatePrduct = (e)=>{
+  const updatePrduct = (e) => {
     // console.log(e.target.name)
-    setProduct({...product,[e.target.name]:e.target.value});
+    setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
   const updateProduct = (id) => {
-    console.log(id)
+    console.log(id);
     // const prd = data.find((item) => item.id === id);
     // console.log(prd);
-    axios.put(`http://localhost:4032/api/product/update/${id}`,product)
-    .then(response => {
-      // console.log(response);
-      console.log(data);
-      const updatedData = data.filter((item) => item.id !== id);
-      updatedData.push(product);
-      setData(updatedData)
-      setStatus(response.status);
-      setOpen(false)
-    })
-    .catch((e) =>{
-      console.log("error",e)
-    })
-   }
+    axios
+      .put(`http://localhost:4032/api/product/${id}`, product)
+      .then((response) => {
+        // console.log(response);
+        console.log(data);
+        const updatedData = data.filter((item) => item.id !== id);
+        updatedData.push(product);
+        setData(updatedData);
+        setStatus(response.status);
+        setOpen(false);
+      })
+      .catch((e) => {
+        console.log("error", e);
+      });
+  };
 
   const style = {
     position: "absolute",
@@ -102,22 +107,20 @@ const Products = () => {
     p: 4,
   };
 
-  const [open, setOpen] = React.useState(false);
-  // const [prd,setPrd] = React.useState({});
-
-  const editProduct = (id) =>{ 
-  console.log(id)
-  setOpen(true);
-  const prd = data.find((item) => item.id === id);
-  console.log(prd);
-  setProduct(prd);
-  // axios.patch(`http://localhost:4032/api/product/update/${id}`,product)
-  // .then(response => {
-  //   setStatus(response.status);
-  // })
-};
-
+  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const editProduct = (id) => {
+    console.log(id);
+    setOpen(true);
+    const prd = data.find((item) => item.id === id);
+    console.log(prd);
+    setProduct(prd);
+    // axios.patch(`http://localhost:4032/api/product/update/${id}`,product)
+    // .then(response => {
+    //   setStatus(response.status);
+    // })
+  };
 
   return (
     <div>
@@ -139,22 +142,22 @@ const Products = () => {
                 <b>Product Id</b>
               </TableCell> */}
               <TableCell>
-                <b>Product Name</b>
+                <b>Name</b>
               </TableCell>
               <TableCell align="centre">
-                <b> Product Price</b>
+                <b>Price</b>
               </TableCell>
               <TableCell align="centre">
-                <b>Product Description&nbsp;</b>
+                <b>Description&nbsp;</b>
               </TableCell>
               <TableCell align="centre">
-                <b>Product Size&nbsp;</b>
+                <b>Size&nbsp;</b>
               </TableCell>
               <TableCell align="centre">
-                <b>Product Stock&nbsp;</b>
+                <b>Stock&nbsp;</b>
               </TableCell>
               <TableCell align="centre">
-                <b>Product Image&nbsp;</b>
+                <b>Image&nbsp;</b>
               </TableCell>
               <TableCell align="centre">
                 <b>Actions&nbsp;</b>
@@ -179,10 +182,13 @@ const Products = () => {
                   <img src={item.productimage} />{" "}
                 </TableCell>
                 <TableCell align="centre">
-                  <BorderColorIcon
-                    style={{ marginRight: "25px" }}
-                    onClick={() => editProduct(item.id)}
-                  />
+                  <Button>
+                    {" "}
+                    <BorderColorIcon
+                      style={{ marginRight: "25px" }}
+                      onClick={() => editProduct(item.id)}
+                    />
+                  </Button>
                   <Modal
                     open={open}
                     onClose={handleClose}
@@ -202,10 +208,11 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productname"
                           type={"text"}
                           placeholder="product name"
+                          label="product name"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productname}
@@ -213,10 +220,11 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productprice"
                           type={"text"}
                           placeholder="product price"
+                          label="product price"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productprice}
@@ -224,10 +232,11 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productdescription"
                           type={"text"}
                           placeholder="product description"
+                          label="product description"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productdescription}
@@ -235,10 +244,11 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productsize"
                           type={"text"}
                           placeholder="product size"
+                          label="product size"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productsize}
@@ -246,10 +256,11 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productstock"
                           type={"text"}
                           placeholder="product stock"
+                          label="product stock"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productstock}
@@ -257,21 +268,44 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productimage"
                           type={"text"}
                           placeholder="product image"
+                          label="product image"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productimage}
                         />
                         <br />
                         <br />
-                        <Button variant="contained" onClick={() => updateProduct(product.id)}>Edit</Button>
+                        <Button
+                          variant="contained"
+                          onClick={() => updateProduct(product.id)}
+                        >
+                          Save
+                        </Button>
                       </form>
                     </Box>
                   </Modal>
-                  <DeleteIcon onClick={() => deleteProduct(item.id)}/>
+                  <Button>
+                    <DeleteIcon
+                      onClick={() => {
+                        setDeleteDialogOpen(true);
+                      }}
+                    />
+                  </Button>
+                  <Modal open={deleteDialogOpen} onClose={handleDeleteClose}>
+                    <Box sx={style}>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Are you sure to want delete?
+                      </Typography>
+                      <Button onClick={() => deleteProduct(item.id)}>
+                        Yes
+                      </Button>
+                      <Button onClick={handleDeleteClose}>No</Button>
+                    </Box>
+                  </Modal>
                 </TableCell>
               </TableRow>
             ))}
