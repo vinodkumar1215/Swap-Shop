@@ -14,14 +14,23 @@ import Modal from "@mui/material/Modal";
 import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
 
-const Products = () => {
+const Products = (props) => {
+  console.log(props);
   const [data, setData] = useState([]);
   const [posts, setPosts] = useState([]);
   const [status, setStatus] = useState([]);
   const [prod, setProd] = useState({});
+  const [status, setStatus] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const handleDeleteClose = () => {
+    setDeleteDialogOpen(false);
+  };
+
   useEffect(() => {
     axios
-      .get(`http://localhost:4032/api/product/list`)
+      .get(`http://localhost:4032/api/product`)
       .then((res) => {
         setData(res.data);
       })
@@ -118,7 +127,20 @@ const Products = () => {
     // })
   };
 
+  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const editProduct = (id) => {
+    console.log(id);
+    setOpen(true);
+    const prd = data.find((item) => item.id === id);
+    console.log(prd);
+    setProduct(prd);
+    // axios.patch(`http://localhost:4032/api/product/update/${id}`,product)
+    // .then(response => {
+    //   setStatus(response.status);
+    // })
+  };
 
   return (
     <div>
@@ -140,22 +162,22 @@ const Products = () => {
                 <b>Product Id</b>
               </TableCell> */}
               <TableCell>
-                <b>Product Name</b>
+                <b>Name</b>
               </TableCell>
               <TableCell align="centre">
-                <b> Product Price</b>
+                <b>Price</b>
               </TableCell>
               <TableCell align="centre">
-                <b>Product Description&nbsp;</b>
+                <b>Description&nbsp;</b>
               </TableCell>
               <TableCell align="centre">
-                <b>Product Size&nbsp;</b>
+                <b>Size&nbsp;</b>
               </TableCell>
               <TableCell align="centre">
-                <b>Product Stock&nbsp;</b>
+                <b>Stock&nbsp;</b>
               </TableCell>
               <TableCell align="centre">
-                <b>Product Image&nbsp;</b>
+                <b>Image&nbsp;</b>
               </TableCell>
               <TableCell align="centre">
                 <b>Actions&nbsp;</b>
@@ -180,10 +202,13 @@ const Products = () => {
                   <img src={item.productimage} />{" "}
                 </TableCell>
                 <TableCell align="centre">
-                  <BorderColorIcon
-                    style={{ marginRight: "25px" }}
-                    onClick={() => editProduct(item.id)}
-                  />
+                  <Button>
+                    {" "}
+                    <BorderColorIcon
+                      style={{ marginRight: "25px" }}
+                      onClick={() => editProduct(item.id)}
+                    />
+                  </Button>
                   <Modal
                     open={open}
                     onClose={handleClose}
@@ -207,6 +232,7 @@ const Products = () => {
                           name="productname"
                           type={"text"}
                           placeholder="product name"
+                          label="product name"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productname}
@@ -218,6 +244,7 @@ const Products = () => {
                           name="productprice"
                           type={"text"}
                           placeholder="product price"
+                          label="product price"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productprice}
@@ -229,6 +256,7 @@ const Products = () => {
                           name="productdescription"
                           type={"text"}
                           placeholder="product description"
+                          label="product description"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productdescription}
@@ -240,6 +268,7 @@ const Products = () => {
                           name="productsize"
                           type={"text"}
                           placeholder="product size"
+                          label="product size"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productsize}
@@ -251,6 +280,7 @@ const Products = () => {
                           name="productstock"
                           type={"text"}
                           placeholder="product stock"
+                          label="product stock"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productstock}
@@ -262,6 +292,7 @@ const Products = () => {
                           name="productimage"
                           type={"text"}
                           placeholder="product image"
+                          label="product image"
                           variant="outlined"
                           style={{ width: "90%" }}
                           value={product.productimage}
@@ -278,6 +309,24 @@ const Products = () => {
                     </Box>
                   </Modal>
                   <DeleteIcon onClick={() => deleteProduct(item.id)} />
+                  <Button>
+                    <DeleteIcon
+                      onClick={() => {
+                        setDeleteDialogOpen(true);
+                      }}
+                    />
+                  </Button>
+                  <Modal open={deleteDialogOpen} onClose={handleDeleteClose}>
+                    <Box sx={style}>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Are you sure to want delete?
+                      </Typography>
+                      <Button onClick={() => deleteProduct(item.id)}>
+                        Yes
+                      </Button>
+                      <Button onClick={handleDeleteClose}>No</Button>
+                    </Box>
+                  </Modal>
                 </TableCell>
               </TableRow>
             ))}
