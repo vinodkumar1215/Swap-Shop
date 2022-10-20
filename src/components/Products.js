@@ -17,8 +17,8 @@ import NavBar from "./NavBar";
 const Products = () => {
   const [data, setData] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [status,setStatus] = useState([]);
-  const [prod,setProd] = useState({});
+  const [status, setStatus] = useState([]);
+  const [prod, setProd] = useState({});
   useEffect(() => {
     axios
       .get(`http://localhost:4032/api/product/list`)
@@ -36,15 +36,16 @@ const Products = () => {
   //   .then(res => console.log('Deleted!!!!', res)).catch(err => console.log(err))
   // }
 
- const deleteProduct = (id) => {
-    axios.delete(`http://localhost:4032/api/product/delete/${id}`)
-    .then(response => {
-      const updatedData = data.filter((item) => item.id !== id);
-      setData(updatedData);
-      setStatus(response.status);
-      alert("product deleted successfully")
-    })
-   }
+  const deleteProduct = (id) => {
+    axios
+      .delete(`http://localhost:4032/api/product/delete/${id}`)
+      .then((response) => {
+        const updatedData = data.filter((item) => item.id !== id);
+        setData(updatedData);
+        setStatus(response.status);
+        alert("product deleted successfully");
+      });
+  };
 
   // function deleteProduct(id) {
   //   fetch(`http://localhost:4032/api/product/delete/${id}`, {
@@ -56,39 +57,39 @@ const Products = () => {
   //   })
   // }
 
-  const [product,setProduct] = useState({
-    id:'',
-    productname:'',
-    productdescription: '',
-    productsize:'',
-    productstock: '',
-    productimage: ''
+  const [product, setProduct] = useState({
+    id: "",
+    productname: "",
+    productdescription: "",
+    productsize: "",
+    productstock: "",
+    productimage: "",
+  });
 
-  })
-
-  const updatePrduct = (e)=>{
+  const updatePrduct = (e) => {
     // console.log(e.target.name)
-    setProduct({...product,[e.target.name]:e.target.value});
+    setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
   const updateProduct = (id) => {
-    console.log(id)
+    console.log(id);
     // const prd = data.find((item) => item.id === id);
     // console.log(prd);
-    axios.put(`http://localhost:4032/api/product/update/${id}`,product)
-    .then(response => {
-      // console.log(response);
-      console.log(data);
-      const updatedData = data.filter((item) => item.id !== id);
-      updatedData.push(product);
-      setData(updatedData)
-      setStatus(response.status);
-      setOpen(false)
-    })
-    .catch((e) =>{
-      console.log("error",e)
-    })
-   }
+    axios
+      .put(`http://localhost:4032/api/product/update/${id}`, product)
+      .then((response) => {
+        // console.log(response);
+        console.log(data);
+        const updatedData = data.filter((item) => item.id !== id);
+        updatedData.push(product);
+        setData(updatedData);
+        setStatus(response.status);
+        setOpen(false);
+      })
+      .catch((e) => {
+        console.log("error", e);
+      });
+  };
 
   const style = {
     position: "absolute",
@@ -105,17 +106,17 @@ const Products = () => {
   const [open, setOpen] = React.useState(false);
   // const [prd,setPrd] = React.useState({});
 
-  const editProduct = (id) =>{ 
-  console.log(id)
-  setOpen(true);
-  const prd = data.find((item) => item.id === id);
-  console.log(prd);
-  setProduct(prd);
-  // axios.patch(`http://localhost:4032/api/product/update/${id}`,product)
-  // .then(response => {
-  //   setStatus(response.status);
-  // })
-};
+  const editProduct = (id) => {
+    console.log(id);
+    setOpen(true);
+    const prd = data.find((item) => item.id === id);
+    console.log(prd);
+    setProduct(prd);
+    // axios.patch(`http://localhost:4032/api/product/update/${id}`,product)
+    // .then(response => {
+    //   setStatus(response.status);
+    // })
+  };
 
   const handleClose = () => setOpen(false);
 
@@ -202,7 +203,7 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productname"
                           type={"text"}
                           placeholder="product name"
@@ -213,7 +214,7 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productprice"
                           type={"text"}
                           placeholder="product price"
@@ -224,7 +225,7 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productdescription"
                           type={"text"}
                           placeholder="product description"
@@ -235,7 +236,7 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productsize"
                           type={"text"}
                           placeholder="product size"
@@ -246,7 +247,7 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productstock"
                           type={"text"}
                           placeholder="product stock"
@@ -257,7 +258,7 @@ const Products = () => {
                         <br />
                         <br />
                         <TextField
-                        onChange={updatePrduct}
+                          onChange={updatePrduct}
                           name="productimage"
                           type={"text"}
                           placeholder="product image"
@@ -267,11 +268,16 @@ const Products = () => {
                         />
                         <br />
                         <br />
-                        <Button variant="contained" onClick={() => updateProduct(product.id)}>Edit</Button>
+                        <Button
+                          variant="contained"
+                          onClick={() => updateProduct(product.id)}
+                        >
+                          Edit
+                        </Button>
                       </form>
                     </Box>
                   </Modal>
-                  <DeleteIcon onClick={() => deleteProduct(item.id)}/>
+                  <DeleteIcon onClick={() => deleteProduct(item.id)} />
                 </TableCell>
               </TableRow>
             ))}
