@@ -1,0 +1,21 @@
+[
+    
+    {
+    "id":"P001",
+    "name":"Floral Dress",
+    "image":"https://media.istockphoto.com/photos/beautiful-lady-overjoyed-by-warm-spring-breeze-dream-of-romantic-date-picture-id1170648040",
+    "price":"$3000"
+},
+{
+    "id":"P002",
+    "name":"Long cotton kurti",
+    "image":"https://www.google.com/url?sa=i&url=https%3A%2F%2Feastmeetsdress.com%2Fproducts%2Fsample-dress-kit&psig=AOvVaw3CN6uWS5UAwarx3QGeVDWP&ust=1666178872521000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOiK45DW6foCFQAAAAAdAAAAABAE",
+    "price":"$2300"
+},
+{
+    "id":"P003",
+    "name":"long kurti",
+    "image":"https://www.google.com/url?sa=i&url=https%3A%2F%2Fin.pinterest.com%2Fpin%2F719801952926223040%2F&psig=AOvVaw3CN6uWS5UAwarx3QGeVDWP&ust=1666178872521000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCOiK45DW6foCFQAAAAAdAAAAABAJ",
+    "price":"$1400"
+}
+]
